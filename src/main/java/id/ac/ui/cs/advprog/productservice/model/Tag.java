@@ -1,6 +1,5 @@
 package id.ac.ui.cs.advprog.productservice.model;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import java.util.UUID;

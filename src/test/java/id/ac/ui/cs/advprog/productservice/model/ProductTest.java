@@ -1,26 +1,18 @@
 package id.ac.ui.cs.advprog.productservice.model;
 
-import id.ac.ui.cs.advprog.productservice.ProductServiceApplication;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-//ID dalam format UUID
-//Nama produk
-//Jenis produk (tag produk, seperti ini)
-//Deskripsi
-//Gambar
-//Harga asli
-//Harga setelah diskon, jika ada
-
-
 public class ProductTest {
     Product product;
-    Set<Tag> productTags = new HashSet<>();
+    Set<String> productTags = new HashSet<>();
 
     @BeforeEach
     void setUp() {
@@ -50,10 +42,14 @@ public class ProductTest {
     }
     @Test
     void testGetTags() {
-        this.productTags.add(new Tag("Wooden"));
-        this.productTags.add(new Tag("Chair"));
+        this.productTags.add("Wooden");
+        this.productTags.add("Chair");
 
-        assertEquals(this.product.getTag(), this.productTags);
+        Set<String> tagNames = this.product.getTag().stream()
+                .map(Tag::getName)
+                .collect(Collectors.toSet());
+
+        assertEquals(tagNames, this.productTags);
     }
     @Test
     void testGetDescription() {
