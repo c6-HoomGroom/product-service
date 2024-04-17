@@ -13,7 +13,7 @@ import java.util.UUID;
 public class Product {
     @Builder.Default private UUID id = UUID.randomUUID();
     private String name;
-    @Singular("tag") private Set<Tag> tag;
+    @Singular("tag") private Set<Tag> tags;
     private String description;
     private String image;
     private double price;
