@@ -11,7 +11,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -113,7 +112,7 @@ public class ProductRepositoryTest {
             productRepository.save(product);
         }
 
-        Product toFind = productList.getLast()
+        Product toFind = productList.getLast();
         Product findResult = productRepository.findById(toFind.getId());
         assertEquals(toFind.getId(), findResult.getId());
         assertEquals(toFind.getName(), findResult.getName());
@@ -148,11 +147,11 @@ public class ProductRepositoryTest {
     void testDeleteIfExist() {
         Product product = productList.get(1);
         Product result = productRepository.save(product);
-        Tag findResult = productRepository.findById(product.getId());
+        Product findResult = productRepository.findById(product.getId());
 
         assertNotNull(findResult);
         productRepository.delete(product.getId());
-        findResult = product.findById(product.getId());
+        findResult = productRepository.findById(product.getId());
 
         assertNull(findResult);
     }
@@ -161,7 +160,7 @@ public class ProductRepositoryTest {
     void testDeleteIfNotExist() {
         Product product = productList.get(1);
         Product result = productRepository.save(product);
-        Tag findResult = productRepository.findById(product.getId());
+        Product findResult = productRepository.findById(product.getId());
 
         assertNotNull(findResult);
 

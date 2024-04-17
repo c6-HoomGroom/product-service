@@ -45,7 +45,7 @@ public class ProductTest {
         this.productTags.add("Wooden");
         this.productTags.add("Chair");
 
-        Set<String> tagNames = this.product.getTag().stream()
+        Set<String> tagNames = this.product.getTags().stream()
                 .map(Tag::getName)
                 .collect(Collectors.toSet());
 
