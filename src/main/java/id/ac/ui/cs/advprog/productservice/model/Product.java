@@ -8,14 +8,19 @@ import lombok.Singular;
 import java.util.Set;
 import java.util.UUID;
 
-@Builder
 @Getter @Setter
 public class Product {
-    @Builder.Default private UUID id = UUID.randomUUID();
+    private UUID id;
     private String name;
-    @Singular("tag") private Set<Tag> tags;
+    private Set<Tag> tags;
     private String description;
     private String image;
     private double price;
     private double discountPrice;
+
+    public Product() {}
+
+    public static ProductBuilder builder() {
+        return new ProductBuilder();
+    }
 }
