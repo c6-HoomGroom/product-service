@@ -8,6 +8,7 @@ import org.mockito.internal.matchers.Equality;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -73,7 +74,8 @@ public class TagRepositoryTest {
             tagRepository.save(tag);
         }
 
-        Tag findResult = tagRepository.findById("Alice");
+
+        Tag findResult = tagRepository.findById(UUID.randomUUID());
         assertNull(findResult);
     }
 
@@ -108,6 +110,6 @@ public class TagRepositoryTest {
 
         assertNotNull(findResult);
 
-        assertThrows(RuntimeException.class, () -> tagRepository.delete("0"));
+        assertThrows(RuntimeException.class, () -> tagRepository.delete(UUID.randomUUID()));
     }
 }
