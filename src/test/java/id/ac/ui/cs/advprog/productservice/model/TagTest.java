@@ -10,7 +10,7 @@ public class TagTest {
     @BeforeEach
     void setUp() {
         this.tag = new Tag();
-        this.tag.setTagName("Perabotan");
+        this.tag.setName("Perabotan");
     }
     @Test
     void testIdExist() {
@@ -18,6 +18,6 @@ public class TagTest {
     }
     @Test
     void testGetTagName() {
-        assertEquals("Perabotan", this.tag.getTagName());
+        assertEquals("Perabotan", this.tag.getName());
     }
 }
