@@ -13,6 +13,11 @@ public class ProductRepository {
     private List<Product> productData = new ArrayList<>();
 
     public Product save(Product product) {
+        productData.add(product);
+        return product;
+    }
+
+    public Product update(Product product) {
         int i = 0;
         for (Product savedProduct:productData) {
             if (savedProduct.getId().equals(product.getId())) {
@@ -22,9 +27,7 @@ public class ProductRepository {
             }
             i+=1;
         }
-
-        productData.add(product);
-        return product;
+        return null;
     }
 
     public void delete(UUID id) throws RuntimeException {

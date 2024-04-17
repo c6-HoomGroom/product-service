@@ -95,7 +95,7 @@ public class ProductRepositoryTest {
                 .discountPrice(product.getDiscountPrice())
                 .build();
 
-        Product result = productRepository.save(newProduct);
+        Product result = productRepository.update(newProduct);
 
         Product findResult = productRepository.findById(product.getId());
 
