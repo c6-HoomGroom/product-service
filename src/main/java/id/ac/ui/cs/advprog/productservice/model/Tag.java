@@ -4,15 +4,18 @@ import lombok.Getter;
 import lombok.Setter;
 import java.util.UUID;
 
-@Getter
+@Getter @Setter
 public class Tag {
-    private final UUID id;
-
-    @Setter
+    private UUID id;
     private String name;
 
     public Tag() {
         this.id = UUID.randomUUID();
+    }
+
+    public Tag(String name) {
+        this();
+        this.setName(name);
     }
 }
 
