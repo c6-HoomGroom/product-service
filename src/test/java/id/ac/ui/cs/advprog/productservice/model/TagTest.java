@@ -9,8 +9,7 @@ public class TagTest {
 
     @BeforeEach
     void setUp() {
-        this.tag = new Tag();
-        this.tag.setName("Perabotan");
+        this.tag = new Tag("Perabotan");
     }
     @Test
     void testIdExist() {
