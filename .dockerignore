@@ -3,3 +3,6 @@
 Dockerfile
 .dockerignore
 target
+### GCP ###
+gcp
+gcp.pub
