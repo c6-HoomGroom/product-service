@@ -90,4 +90,3 @@ tasks.jacocoTestReport {
 		html.outputLocation.set(layout.buildDirectory.dir("jacocoHtml"))
 	}
 }
-g
