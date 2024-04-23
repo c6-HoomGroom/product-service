@@ -12,4 +12,9 @@ public class HomeController {
     public String goToHomePage(Model model){
         return "homePage";
     }
+
+    @GetMapping("/test")
+    public String goToTestPage(Model model){
+        return "testPage";
+    }
 }
