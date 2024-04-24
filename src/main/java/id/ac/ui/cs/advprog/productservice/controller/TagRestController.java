@@ -15,15 +15,20 @@ public class TagRestController {
     @Autowired
     private TagService tagService;
 
-    @GetMapping("/id/{id}")
+    @GetMapping("/api/id/{id}")
     public Tag getTagById(@PathVariable String id) {
         Tag tag = tagService.findById(id);
         return tag;
     }
 
-    @GetMapping("/name/{name}")
+    @GetMapping("/api/name/{name}")
     public Tag getTagByName(@PathVariable String name) {
         Tag tag = tagService.findByName(name);
         return tag;
+    }
+
+    @GetMapping("/api")
+    public List<Tag> getAllTag() {
+        return tagService.findAll();
     }
 }
