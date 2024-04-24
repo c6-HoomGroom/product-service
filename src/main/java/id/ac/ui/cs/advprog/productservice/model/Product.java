@@ -1,9 +1,7 @@
 package id.ac.ui.cs.advprog.productservice.model;
 
-import lombok.Builder;
 import lombok.Setter;
 import lombok.Getter;
-import lombok.Singular;
 
 import java.util.Set;
 import java.util.UUID;
@@ -18,7 +16,7 @@ public class Product {
     private double price;
     private double discountPrice;
 
-    public Product() {}
+    public Product() { this.id = UUID.randomUUID(); }
 
     public static ProductBuilder builder() {
         return new ProductBuilder();

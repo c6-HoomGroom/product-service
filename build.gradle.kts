@@ -30,6 +30,9 @@ val junitJupiterVersion = "5.9.1"
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
 	implementation("org.springframework.boot:spring-boot-starter-web")
+	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+	implementation("org.jetbrains.kotlin:kotlin-reflect")
+	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	compileOnly("org.projectlombok:lombok")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
@@ -68,10 +71,25 @@ tasks.test {
 	filter {
 		excludeTestsMatching("*FunctionalTest")
 	}
-
 	finalizedBy(tasks.jacocoTestReport)
 }
-
+//
+//tasks.jacocoTestReport {
+//	dependsOn(tasks.test)
+//}
+//
+//tasks.test {
+//	useJUnitPlatform()
+//	finalizedBy(tasks.jacocoTestReport) // report is always generated after tests run
+//}
 tasks.jacocoTestReport {
-	dependsOn(tasks.test)
+	classDirectories.setFrom(files(classDirectories.files.map {
+		fileTree(it) { exclude("**/*Application**") }
+	}))
+	dependsOn(tasks.test) // tests are required to run before generating the report
+	reports {
+		xml.required.set(false)
+		csv.required.set(false)
+		html.outputLocation.set(layout.buildDirectory.dir("jacocoHtml"))
+	}
 }

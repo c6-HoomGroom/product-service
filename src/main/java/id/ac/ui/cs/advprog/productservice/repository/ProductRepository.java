@@ -33,7 +33,7 @@ public class ProductRepository {
     public void delete(UUID id) throws RuntimeException {
         Product deletedProduct = findById(id);
         if (deletedProduct == null) {
-            throw new RuntimeException("Tag not found for id: " + id.toString());
+            throw new RuntimeException("Product not found for id: " + id.toString());
         }
         productData.remove(deletedProduct);
     }
