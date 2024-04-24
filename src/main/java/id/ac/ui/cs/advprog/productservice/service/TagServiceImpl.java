@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class TagServiceImpl implements TagService {
@@ -15,26 +16,26 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public Tag create(Tag tag) {
-        return null;
+        return tagRepository.save(tag);
     }
 
     @Override
     public void delete(String id) {
-
+        tagRepository.delete(UUID.fromString(id));
     }
 
     @Override
     public Tag findById(String id) {
-        return null;
+        return tagRepository.findById(UUID.fromString(id));
     }
 
     @Override
     public Tag findByName(String name) {
-        return null;
+        return tagRepository.findByName(name);
     }
 
     @Override
     public List<Tag> findAll() {
-        return null;
+        return tagRepository.findAll();
     }
 }

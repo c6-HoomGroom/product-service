@@ -115,6 +115,8 @@ public class ProductServiceImplTest {
         when(productRepository.update(product2)).thenReturn(mockUpdate(product2));
         productService.update(product2);
 
+        product1 = products.getFirst();
+
         assertEquals(product1.getId(), product2.getId());
         assertEquals(product1.getName(), product2.getName());
         assertEquals(product1.getDescription(), product2.getDescription());
@@ -124,16 +126,14 @@ public class ProductServiceImplTest {
     }
     @Test
     void testUpdateIfNotFound() {
-        Product product1 = products.getFirst();
-        Product product2 = products.getLast();
-        product2.setId(UUID.fromString("0"));
+        Product product = new Product();
 
-        when(productRepository.update(product2)).thenReturn(mockUpdate(product2));
-        Product updatedProduct = productService.update(product2);
+        when(productRepository.update(product)).thenReturn(mockUpdate(product));
+        Product updatedProduct = productService.update(product);
 
         assertNull(updatedProduct);
 
-        verify(productRepository, times(1)).update(product2);
+        verify(productRepository, times(1)).update(product);
     }
     @Test
     void testDelete() {
@@ -157,7 +157,7 @@ public class ProductServiceImplTest {
     }
     @Test
     void testDeleteIfNotFound() {
-        UUID productId = UUID.fromString("0");
+        UUID productId = UUID.fromString("12345678-1234-1234-1234-123456789abc");
         doAnswer(invocation -> {
             throw new RuntimeException("Product not found for id: " + productId.toString());
         }).when(productRepository).delete(productId);

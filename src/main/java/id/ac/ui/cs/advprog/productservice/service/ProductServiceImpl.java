@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -15,26 +16,26 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product create(Product product) {
-        return null;
+        return productRepository.save(product);
     }
 
     @Override
     public Product update(Product product) {
-        return null;
+        return productRepository.update(product);
     }
 
     @Override
     public void delete(String id) {
-
+        productRepository.delete(UUID.fromString(id));
     }
 
     @Override
     public Product findById(String id) {
-        return null;
+        return productRepository.findById(UUID.fromString(id));
     }
 
     @Override
     public List<Product> findAll() {
-        return null;
+        return productRepository.findAll();
     }
 }

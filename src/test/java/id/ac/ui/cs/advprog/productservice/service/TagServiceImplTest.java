@@ -97,7 +97,7 @@ public class TagServiceImplTest {
     }
     @Test
     void testDeleteIfNotFound() {
-        UUID tagId = UUID.fromString("0");
+        UUID tagId = UUID.fromString("12345678-1234-1234-1234-123456789abc");
         doAnswer(invocation -> {
             throw new RuntimeException("Tag not found for id: " + tagId.toString());
         }).when(tagRepository).delete(tagId);
