@@ -16,7 +16,7 @@ public class Product {
     private double price;
     private double discountPrice;
 
-    public Product() {}
+    public Product() { this.id = UUID.randomUUID(); }
 
     public static ProductBuilder builder() {
         return new ProductBuilder();

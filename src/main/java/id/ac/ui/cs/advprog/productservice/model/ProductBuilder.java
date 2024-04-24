@@ -5,7 +5,7 @@ import java.util.Set;
 import java.util.UUID;
 
 public class ProductBuilder {
-    private UUID id = UUID.randomUUID();
+    private UUID id;
     private String name;
     private Set<Tag> tags = new HashSet<>();
     private String description;
@@ -58,6 +58,9 @@ public class ProductBuilder {
 
     public Product build() {
         Product product = new Product();
+        if (this.id == null) {
+            this.id = product.getId();
+        }
         product.setId(id);
         product.setName(name);
         product.setTags(tags);

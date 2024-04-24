@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Product</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERd`knLPMO" crossorigin="anonymous">
+</head>
+<body>
+
+<div class="container">
+    <h3>Edit Product</h3>
+
+    <form th:action="@{/products/edit}" th:object="${product}" method="post">
+        <input type="hidden" th:field="*{id}" />
+        <div class="form-group">
+            <label for="nameInput">Name</label>
+            <input th:field="*{name}" type="text" class="form-control mb-4 col-4" id="nameInput" placeholder="Enter product name">
+        </div>
+        <div class="form-group">
+            <label for="descriptionInput">Description</label>
+            <input th:field="*{description}" type="text" class="form-control mb-4 col-4" id="descriptionInput" placeholder="Enter product description">
+        </div>
+        <div class="form-group">
+            <label for="imageInput">Image</label>
+            <input th:field="*{image}" type="text" class="form-control mb-4 col-4" id="imageInput" placeholder="Enter image URL">
+        </div>
+        <div class="form-group">
+            <label for="priceInput">Price</label>
+            <input th:field="*{price}" type="number" class="form-control mb-4 col-4" id="priceInput" placeholder="Enter product price">
+        </div>
+        <div class="form-group">
+            <label for="discountPriceInput">Discount Price (Optional)</label>
+            <input th:field="*{discountPrice}" type="number" class="form-control mb-4 col-4" id="discountPriceInput" placeholder="Enter product discount price">
+        </div>
+        <div class="form-group">
+            <label>Tags</label>
+            <br/>
+            <div th:each="tag : ${allTags}">
+                <input type="checkbox" th:id="${'tag_' + tag.id}" th:name="tagNames" th:value="${tag.name}" th:checked="${product.tags.contains(tag)}"/>
+                <label th:for="${'tag_' + tag.id}" th:text="${tag.name}"></label>
+                <br/>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+</body>
+</html>
