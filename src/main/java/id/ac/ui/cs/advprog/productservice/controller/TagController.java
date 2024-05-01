@@ -36,7 +36,7 @@ public class TagController {
     }
 
     @PostMapping("/delete")
-    public String deleteCar(@RequestParam("tagId") String tagId) {
+    public String deleteTag(@RequestParam("tagId") String tagId) {
         tagService.delete(tagId);
         return "redirect:/tags";
     }
