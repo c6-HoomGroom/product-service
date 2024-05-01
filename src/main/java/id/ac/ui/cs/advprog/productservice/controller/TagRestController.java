@@ -71,8 +71,8 @@ public class TagRestController {
         return responseEntity;
     }
 
-    @PostMapping("/api/delete")
-    public ResponseEntity deleteTag(@RequestParam(value = "tagId", required = false) String tagId) {
+    @RequestMapping(value = "/api/delete/{tagId}", method = RequestMethod.DELETE)
+    public ResponseEntity deleteTag(@PathVariable String tagId) {
         ResponseEntity responseEntity = null;
         try {
             tagService.delete(tagId);
