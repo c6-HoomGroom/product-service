@@ -92,4 +92,50 @@ public class ProductRestController
 
         return responseEntity;
     }
+
+    @PostMapping("/api/delete")
+    public ResponseEntity deleteProduct(@RequestParam(value = "productId", required = false) String productId) {
+        ResponseEntity responseEntity = null;
+        try {
+            productService.delete(productId);
+            responseEntity = ResponseEntity.ok().build();
+        } catch (Exception e) {
+            String errMessage = "Failed to delete product.";
+            System.err.println(errMessage);
+            e.printStackTrace();
+            responseEntity = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(errMessage);
+        }
+        return responseEntity;
+    }
+
+    @PostMapping("/api/edit")
+    public ResponseEntity editProductPost(@RequestBody Product product, @RequestParam(value = "tagNames", required = false) String tagNames) {
+        ResponseEntity responseEntity = null;
+
+        try {
+            Set<Tag> selectedTags = new HashSet<>();
+            String[] tags = tagNames.split(",");
+            List<String> tagList = Arrays.asList(tags);
+
+            for (String tagName : tagList) {
+                Tag tag = tagService.findByName(tagName);
+                if (tag != null) {
+                    selectedTags.add(tag);
+                }
+            }
+            product.setTags(selectedTags);
+            productService.update(product);
+            responseEntity = ResponseEntity.ok().build();
+
+        } catch (Exception e) {
+            String errMessage = "Failed to edit product.";
+            System.err.println(errMessage);
+            e.printStackTrace();
+            responseEntity = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(errMessage);
+        }
+
+        return responseEntity;
+    }
 }
