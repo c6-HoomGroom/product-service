@@ -8,12 +8,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("/tags")
 public class TagRestController {
     @Autowired
     private TagService tagService;
+
+    Logger logger = Logger.getLogger(getClass().getName());
 
     @GetMapping("/api/id/{id}")
     public ResponseEntity getTagById(@PathVariable String id) {
@@ -27,8 +30,7 @@ public class TagRestController {
             }
         } catch (Exception e) {
             String errMessage = "Failed to retrieve tag with id: " + id;
-            System.err.println(errMessage);
-            e.printStackTrace();
+            logger.info(errMessage);
             responseEntity = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(errMessage);
         }
@@ -47,8 +49,7 @@ public class TagRestController {
             }
         } catch (Exception e) {
             String errMessage = "Failed to retrieve tag with name: " + name;
-            System.err.println(errMessage);
-            e.printStackTrace();
+            logger.info(errMessage);
             responseEntity = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(errMessage);
         }
@@ -63,8 +64,7 @@ public class TagRestController {
             responseEntity = ResponseEntity.ok(tagList);
         } catch (Exception e) {
             String errMessage = "Failed to retrieve all tags.";
-            System.err.println(errMessage);
-            e.printStackTrace();
+            logger.info(errMessage);
             responseEntity = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(errMessage);
         }
@@ -79,8 +79,7 @@ public class TagRestController {
             responseEntity = ResponseEntity.ok().build();
         } catch (Exception e) {
             String errMessage = "Failed to delete tag.";
-            System.err.println(errMessage);
-            e.printStackTrace();
+            logger.info(errMessage);
             responseEntity = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(errMessage);
         }
@@ -95,8 +94,7 @@ public class TagRestController {
             responseEntity = ResponseEntity.ok().build();
         } catch (Exception e) {
             String errMessage = "Failed to create tag.";
-            System.err.println(errMessage);
-            e.printStackTrace();
+            logger.info(errMessage);
             responseEntity = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(errMessage);
         }
