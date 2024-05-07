@@ -25,6 +25,7 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
+    String backToProducts = "redirect:/products";
 
     @GetMapping("/add")
     public String createProductPage(Model model) {
@@ -49,7 +50,7 @@ public class ProductController {
         }
         product.setTags(selectedTags);
         productService.create(product);
-        return "redirect:/products";
+        return backToProducts;
     }
 
     @GetMapping("")
@@ -62,7 +63,7 @@ public class ProductController {
     @PostMapping("/delete")
     public String deleteProduct(@RequestParam("productId") String productId) {
         productService.delete(productId);
-        return "redirect:/products";
+        return backToProducts;
     }
 
     @GetMapping("/edit/{id}")
@@ -88,6 +89,6 @@ public class ProductController {
         product.setTags(selectedTags);
 
         productService.update(product);
-        return "redirect:/products";
+        return backToProducts;
     }
 }
