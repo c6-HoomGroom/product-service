@@ -1,0 +1,21 @@
+<!-- productFormFields.html -->
+<div class="form-group">
+    <label for="nameInput">Name</label>
+    <input th:field="*{name}" type="text" class="form-control mb-4 col-4" id="nameInput" placeholder="Enter product name">
+</div>
+<div class="form-group">
+    <label for="descriptionInput">Description</label>
+    <input th:field="*{description}" type="text" class="form-control mb-4 col-4" id="descriptionInput" placeholder="Enter product description">
+</div>
+<div class="form-group">
+    <label for="imageInput">Image</label>
+    <input th:field="*{image}" type="text" class="form-control mb-4 col-4" id="imageInput" placeholder="Enter image URL">
+</div>
+<div class="form-group">
+    <label for="priceInput">Price</label>
+    <input th:field="*{price}" type="number" class="form-control mb-4 col-4" id="priceInput" placeholder="Enter product price">
+</div>
+<div class="form-group">
+    <label for="discountPriceInput">Discount Price (Optional)</label>
+    <input th:field="*{discountPrice}" type="number" class="form-control mb-4 col-4" id="discountPriceInput" placeholder="Enter product discount price">
+</div>

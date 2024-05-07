@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("/products")
@@ -23,6 +24,8 @@ public class ProductRestController
 
     @Autowired
     private TagService tagService;
+
+    Logger logger = Logger.getLogger(getClass().getName());
 
     @GetMapping("/api/id/{id}")
     public ResponseEntity getProductById(@PathVariable String id) {
@@ -36,8 +39,7 @@ public class ProductRestController
             }
         } catch (Exception e) {
             String errMessage = "Failed to retrieve product with id: " + id;
-            System.err.println(errMessage);
-            e.printStackTrace();
+            logger.info(errMessage);
             responseEntity = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(errMessage);
         }
@@ -52,8 +54,7 @@ public class ProductRestController
             responseEntity = ResponseEntity.ok(productList);
         } catch (Exception e) {
             String errMessage = "Failed to retrieve all products.";
-            System.err.println(errMessage);
-            e.printStackTrace();
+            logger.info(errMessage);
             responseEntity = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(errMessage);
         }
@@ -84,8 +85,7 @@ public class ProductRestController
 
         } catch (Exception e) {
             String errMessage = "Failed to create product.";
-            System.err.println(errMessage);
-            e.printStackTrace();
+            logger.info(errMessage);
             responseEntity = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(errMessage);
         }
@@ -101,8 +101,7 @@ public class ProductRestController
             responseEntity = ResponseEntity.ok().build();
         } catch (Exception e) {
             String errMessage = "Failed to delete product.";
-            System.err.println(errMessage);
-            e.printStackTrace();
+            logger.info(errMessage);
             responseEntity = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(errMessage);
         }
@@ -130,8 +129,7 @@ public class ProductRestController
 
         } catch (Exception e) {
             String errMessage = "Failed to edit product.";
-            System.err.println(errMessage);
-            e.printStackTrace();
+            logger.info(errMessage);
             responseEntity = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(errMessage);
         }
