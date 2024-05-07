@@ -3,7 +3,6 @@ plugins {
 	jacoco
 	id("org.springframework.boot") version "3.2.4"
 	id("io.spring.dependency-management") version "1.1.4"
-	id("org.sonarqube") version "4.4.1.3373"
 }
 
 group = "id.ac.ui.cs.advprog"
@@ -92,13 +91,5 @@ tasks.jacocoTestReport {
 		xml.required.set(true)
 		csv.required.set(true)
 		html.outputLocation.set(layout.buildDirectory.dir("jacocoHtml"))
-	}
-}
-
-sonar {
-	properties {
-		property("sonar.projectKey", "c6-HoomGroom_product-service")
-		property("sonar.organization", "c6-hoomgroom")
-		property("sonar.host.url", "https://sonarcloud.io")
 	}
 }
