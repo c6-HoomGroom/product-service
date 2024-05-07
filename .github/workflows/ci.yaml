@@ -33,3 +33,11 @@ jobs:
           path: |
             **/build/reports/
             **/build/test-results/
+
+      - name: Build and SonarCloud Scan
+        run: |
+          ./gradlew build sonar \
+            -Dsonar.projectKey=c6-HoomGroom_product-service \
+            -Dsonar.organization=c6-hoomgroom \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
