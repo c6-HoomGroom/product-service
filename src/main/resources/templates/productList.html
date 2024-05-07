@@ -26,7 +26,7 @@
         <tr th:each="product: ${products}">
             <td th:text="${product.name}"></td>
             <td th:text="${product.description}"></td>
-            <td><img th:src="${product.image}" alt="Product Image" style="max-width: 200px; max-height: 200px;"></td>
+            <td><img th:src="${product.image}" alt="Product" style="max-width: 200px; max-height: 200px;"></td>
             <td th:text="${product.price}"></td>
             <td th:text="${product.discountPrice}"></td>
             <td th:text="${#strings.arrayJoin(product.tags.![name], ', ')}"></td>

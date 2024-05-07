@@ -30,10 +30,10 @@ public class ProductRepository {
         return null;
     }
 
-    public void delete(UUID id) throws RuntimeException {
+    public void delete(UUID id) throws ProductNotFoundException {
         Product deletedProduct = findById(id);
         if (deletedProduct == null) {
-            throw new RuntimeException("Product not found for id: " + id.toString());
+            throw new ProductNotFoundException("Product not found for id: " + id.toString());
         }
         productData.remove(deletedProduct);
     }
@@ -49,5 +49,11 @@ public class ProductRepository {
 
     public List<Product> findAll() {
         return new ArrayList<>(productData);
+    }
+
+    public static class ProductNotFoundException extends RuntimeException {
+        public ProductNotFoundException(String message) {
+            super(message);
+        }
     }
 }

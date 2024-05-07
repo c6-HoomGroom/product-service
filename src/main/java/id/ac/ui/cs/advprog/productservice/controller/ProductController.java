@@ -25,6 +25,7 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
+    String productPage = "redirect:/products";
 
     @GetMapping("/add")
     public String createProductPage(Model model) {
@@ -34,21 +35,22 @@ public class ProductController {
     }
 
     @PostMapping("")
-    public String createProductPost(@ModelAttribute Product product, @RequestParam("tagNames") String tagNames) {
+    public String createProductPost(@ModelAttribute Product product, @RequestParam(value = "tagNames", required = false) String tagNames) {
         Set<Tag> selectedTags = new HashSet<>();
-        String[] tags = tagNames.split(",");
-        List<String> tagList = Arrays.asList(tags);
+        if (tagNames != null && !tagNames.isEmpty()) {
+            String[] tags = tagNames.split(",");
+            List<String> tagList = Arrays.asList(tags);
 
-        for (String tagName : tagList) {
-            Tag tag = tagService.findByName(tagName);
-            if (tag != null) {
-                selectedTags.add(tag);
+            for (String tagName : tagList) {
+                Tag tag = tagService.findByName(tagName);
+                if (tag != null) {
+                    selectedTags.add(tag);
+                }
             }
         }
         product.setTags(selectedTags);
-
         productService.create(product);
-        return "redirect:/products";
+        return productPage;
     }
 
     @GetMapping("")
@@ -61,7 +63,7 @@ public class ProductController {
     @PostMapping("/delete")
     public String deleteProduct(@RequestParam("productId") String productId) {
         productService.delete(productId);
-        return "redirect:/products";
+        return productPage;
     }
 
     @GetMapping("/edit/{id}")
@@ -87,6 +89,6 @@ public class ProductController {
         product.setTags(selectedTags);
 
         productService.update(product);
-        return "redirect:/products";
+        return productPage;
     }
 }

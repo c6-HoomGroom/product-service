@@ -19,10 +19,10 @@ public class TagRepository {
         return tag;
     }
 
-    public void delete(UUID id) throws RuntimeException {
+    public void delete(UUID id) throws TagNotFoundException {
         Tag deletedTag = findById(id);
         if (deletedTag == null) {
-            throw new RuntimeException("Tag not found for id: " + id.toString());
+            throw new TagNotFoundException("Tag not found for id: " + id.toString());
         }
         tagData.remove(deletedTag);
     }
@@ -49,5 +49,11 @@ public class TagRepository {
 
     public List<Tag> findAll() {
         return new ArrayList<>(tagData);
+    }
+
+    public static class TagNotFoundException extends RuntimeException {
+        public TagNotFoundException(String message) {
+            super(message);
+        }
     }
 }
