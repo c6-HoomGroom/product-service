@@ -15,16 +15,15 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-
-    private String name;
-
     @ManyToMany
     @JoinTable(
-            name = "product_tags",
-            joinColumns = @JoinColumn(name = "product_id"),
-            inverseJoinColumns = @JoinColumn(name = "tag_id")
+            name="product_tags",
+            joinColumns= @JoinColumn(name="product_id", referencedColumnName="id"),
+            inverseJoinColumns= @JoinColumn(name="tag_id", referencedColumnName="id")
     )
     private Set<Tag> tags;
+
+    private String name;
     private String description;
     private String image;
     private double price;
