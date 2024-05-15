@@ -31,17 +31,6 @@ public class TagServiceImpl implements TagService {
         return optionalTag.orElse(null);
     }
 
-//    @Override
-//    public void delete(String id) {
-//        tagRepository.deleteById(id);
-//    }
-//
-//    @Override
-//    public Tag findById(String id) {
-//        Optional<Tag> optionalTag = tagRepository.findById(id);
-//        return optionalTag.orElse(null);
-//    }
-
     @Override
     public Tag findByName(String name) {
         Optional<Tag> optionalTag = tagRepository.findByName(name);

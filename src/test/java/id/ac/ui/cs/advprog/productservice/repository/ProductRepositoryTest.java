@@ -171,7 +171,7 @@ public class ProductRepositoryTest {
     @Test
     void testDeleteIfExist() {
         Product product = productList.get(1);
-        Product result = productRepository.save(product);
+        productRepository.save(product);
         Optional<Product> findResultOptional = productRepository.findById(product.getId());
         Product findResult = findResultOptional.get();
 

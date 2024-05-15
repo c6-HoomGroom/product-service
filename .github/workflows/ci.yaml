@@ -2,12 +2,28 @@ name: Continuous Integration (CI)
 
 on:
   push:
+    branches:
+      - main
   pull_request:
 
 jobs:
   test:
     name: Run tests
     runs-on: ubuntu-22.04
+
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -22,8 +38,21 @@ jobs:
       - name: Set gradlew as executable
         run: chmod +x ./gradlew
 
+      - name: Build with Gradle
+        run: ./gradlew build
+        env:
+          SPRING_PROFILES_ACTIVE: test
+          SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/postgres
+          SPRING_DATASOURCE_USERNAME: postgres
+          SPRING_DATASOURCE_PASSWORD: postgres
+
       - name: Run unit tests
         run: ./gradlew test
+        env:
+          SPRING_PROFILES_ACTIVE: test
+          SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/postgres
+          SPRING_DATASOURCE_USERNAME: postgres
+          SPRING_DATASOURCE_PASSWORD: postgres
 
       - name: Store reports
         if: failure()
@@ -33,3 +62,12 @@ jobs:
           path: |
             **/build/reports/
             **/build/test-results/
+
+      - name: Deploy to Supabase (Production)
+        if: github.ref == 'refs/heads/main'
+        run: ./gradlew bootRun
+        env:
+          SPRING_PROFILES_ACTIVE: prod
+          JDBC_DATABASE_URL: ${{ secrets.JDBC_DATABASE_URL }}
+          JDBC_DATABASE_USERNAME: ${{ secrets.JDBC_DATABASE_USERNAME }}
+          JDBC_DATABASE_PASSWORD: ${{ secrets.JDBC_DATABASE_PASSWORD }}
