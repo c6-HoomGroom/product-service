@@ -15,6 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @ExtendWith(MockitoExtension.class)
@@ -81,7 +82,7 @@ public class TagServiceImplTest {
         doAnswer(invocation -> {
             tags.remove(tag);
             return null;
-        }).when(tagRepository).delete(tag.getId());
+        }).when(tagRepository).deleteById(tag.getId());
 
         when(tagRepository.findAll()).thenReturn(tags);
 
@@ -93,18 +94,18 @@ public class TagServiceImplTest {
         List<Tag> afterDelete = tagService.findAll();
         assertEquals(4, afterDelete.size());
 
-        verify(tagRepository, times(1)).delete(tag.getId());
+        verify(tagRepository, times(1)).deleteById(tag.getId());
     }
     @Test
     void testDeleteIfNotFound() {
         UUID tagId = UUID.fromString("12345678-1234-1234-1234-123456789abc");
         doAnswer(invocation -> {
             throw new RuntimeException("Tag not found for id: " + tagId.toString());
-        }).when(tagRepository).delete(tagId);
+        }).when(tagRepository).deleteById(tagId);
 
         assertThrows(RuntimeException.class, () -> tagService.delete(tagId.toString()));
 
-        verify(tagRepository, times(1)).delete(tagId);
+        verify(tagRepository, times(1)).deleteById(tagId);
     }
     @Test
     void testFindAll() {
@@ -120,7 +121,7 @@ public class TagServiceImplTest {
     void testFindById() {
         Tag tag = tags.get(3);
         UUID tagId = tag.getId();
-        when(tagRepository.findById(tagId)).thenReturn(mockFindById(tagId));
+        when(tagRepository.findById(tagId)).thenReturn(Optional.ofNullable(mockFindById(tagId)));
         Tag foundTag = tagService.findById(tagId.toString());
 
         assertNotNull(foundTag);
@@ -133,7 +134,7 @@ public class TagServiceImplTest {
     void testFindByName() {
         Tag tag = tags.get(3);
         String tagName = tag.getName();
-        when(tagRepository.findByName(tagName)).thenReturn(mockFindByName(tagName));
+        when(tagRepository.findByName(tagName)).thenReturn(Optional.ofNullable(mockFindByName(tagName)));
         Tag foundTag = tagService.findByName(tagName.toString());
 
         assertNotNull(foundTag);

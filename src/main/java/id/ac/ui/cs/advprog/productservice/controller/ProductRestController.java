@@ -62,7 +62,7 @@ public class ProductRestController
     }
 
     @PostMapping("/api")
-    public ResponseEntity createProductPost(@RequestBody Product product, @RequestParam(value = "tagNames", required = false) String tagNames) {
+    public ResponseEntity createProduct(@RequestBody Product product, @RequestParam(value = "tagNames", required = false) String tagNames) {
         ResponseEntity responseEntity = null;
 
         try {
@@ -109,7 +109,7 @@ public class ProductRestController
     }
 
     @PostMapping("/api/edit")
-    public ResponseEntity editProductPost(@RequestBody Product product, @RequestParam(value = "tagNames", required = false) String tagNames) {
+    public ResponseEntity editProduct(@RequestBody Product product, @RequestParam(value = "tagNames", required = false) String tagNames) {
         ResponseEntity responseEntity = null;
 
         try {

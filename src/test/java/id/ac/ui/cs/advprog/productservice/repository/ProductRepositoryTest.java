@@ -7,28 +7,44 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@ExtendWith(MockitoExtension.class)
+@DataJpaTest
+@Transactional
+@Rollback
 public class ProductRepositoryTest {
 
-    @InjectMocks
+    @Autowired
     ProductRepository productRepository;
+    @Autowired
+    TagRepository tagRepository;
 
     List<Product> productList = new ArrayList<>();
 
     @BeforeEach
     void setUp() {
+        Tag wooden = tagRepository.save(new Tag("Wooden"));
+        Tag chair = tagRepository.save(new Tag("Chair"));
+        Tag metal = tagRepository.save(new Tag("Metal"));
+        Tag spoon = tagRepository.save(new Tag("Spoon"));
+
         Product product = Product.builder()
                 .name("Kursi Kayu")
-                .tag(new Tag("Wooden"))
-                .tag(new Tag("Chair"))
+                .tag(wooden)
+                .tag(chair)
                 .description("Kursi Kayu")
                 .image("https://i.ibb.co/KzQjH3p/sam-moghadam-khamseh-kvmds-Tr-GOBM-unsplash.jpg")
                 .price(300000)
@@ -37,8 +53,8 @@ public class ProductRepositoryTest {
 
         Product product2 = Product.builder()
                 .name("Kursi Metal")
-                .tag(new Tag("Metal"))
-                .tag(new Tag("Chair"))
+                .tag(metal)
+                .tag(chair)
                 .description("Kursi Metal")
                 .image("https://i.ibb.co/KzQjH3p/sam-moghadam-khamseh-kvmds-Tr-GOBM-unsplash.jpg")
                 .price(400000)
@@ -47,8 +63,8 @@ public class ProductRepositoryTest {
 
         Product product3 = Product.builder()
                 .name("Sendok Kayu")
-                .tag(new Tag("Wooden"))
-                .tag(new Tag("Spoon"))
+                .tag(wooden)
+                .tag(spoon)
                 .description("Sendok Kayu")
                 .image("https://i.ibb.co/KzQjH3p/sam-moghadam-khamseh-kvmds-Tr-GOBM-unsplash.jpg")
                 .price(40000)
@@ -70,7 +86,10 @@ public class ProductRepositoryTest {
         Product product = productList.getFirst();
         Product result = productRepository.save(product);
 
-        Product findResult = productRepository.findById(product.getId());
+        Optional<Product> findResultOptional = productRepository.findById(product.getId());
+        assertTrue(findResultOptional.isPresent());
+
+        Product findResult = findResultOptional.get();
         assertEquals(product.getId(), result.getId());
         assertEquals(product.getId(), findResult.getId());
         assertEquals(product.getName(), findResult.getName());
@@ -95,9 +114,12 @@ public class ProductRepositoryTest {
                 .discountPrice(product.getDiscountPrice())
                 .build();
 
-        Product result = productRepository.update(newProduct);
+        Product result = productRepository.save(newProduct);
 
-        Product findResult = productRepository.findById(product.getId());
+        Optional<Product> findResultOptional = productRepository.findById(product.getId());
+        assertTrue(findResultOptional.isPresent());
+
+        Product findResult = findResultOptional.get();
 
         assertEquals(product.getId(), newProduct.getId());
         assertEquals(product.getId(), result.getId());
@@ -113,7 +135,10 @@ public class ProductRepositoryTest {
         }
 
         Product toFind = productList.getLast();
-        Product findResult = productRepository.findById(toFind.getId());
+        Optional<Product> findResultOptional = productRepository.findById(toFind.getId());
+        assertTrue(findResultOptional.isPresent());
+
+        Product findResult = findResultOptional.get();
         assertEquals(toFind.getId(), findResult.getId());
         assertEquals(toFind.getName(), findResult.getName());
         assertEquals(toFind.getPrice(), findResult.getPrice());
@@ -129,8 +154,8 @@ public class ProductRepositoryTest {
             productRepository.save(product);
         }
 
-        Product findResult = productRepository.findById(UUID.randomUUID());
-        assertNull(findResult);
+        Optional<Product> findResultOptional = productRepository.findById(UUID.randomUUID());
+        assertTrue(findResultOptional.isEmpty());
     }
 
     @Test
@@ -147,23 +172,12 @@ public class ProductRepositoryTest {
     void testDeleteIfExist() {
         Product product = productList.get(1);
         Product result = productRepository.save(product);
-        Product findResult = productRepository.findById(product.getId());
+        Optional<Product> findResultOptional = productRepository.findById(product.getId());
+        Product findResult = findResultOptional.get();
 
         assertNotNull(findResult);
-        productRepository.delete(product.getId());
-        findResult = productRepository.findById(product.getId());
-
-        assertNull(findResult);
-    }
-
-    @Test
-    void testDeleteIfNotExist() {
-        Product product = productList.get(1);
-        Product result = productRepository.save(product);
-        Product findResult = productRepository.findById(product.getId());
-
-        assertNotNull(findResult);
-
-        assertThrows(RuntimeException.class, () -> productRepository.delete(UUID.randomUUID()));
+        productRepository.deleteById(product.getId());
+        findResultOptional = productRepository.findById(product.getId());
+        assertTrue(findResultOptional.isEmpty());
     }
 }

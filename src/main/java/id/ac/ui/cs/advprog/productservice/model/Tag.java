@@ -3,6 +3,8 @@ package id.ac.ui.cs.advprog.productservice.model;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.UuidGenerator;
 
 import java.util.Set;
 import java.util.UUID;
@@ -12,8 +14,8 @@ import java.util.UUID;
 @Getter @Setter
 public class Tag {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
+
     private String name;
 
     @ManyToMany(mappedBy = "tags")
