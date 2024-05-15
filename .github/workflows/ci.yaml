@@ -62,12 +62,3 @@ jobs:
           path: |
             **/build/reports/
             **/build/test-results/
-
-      - name: Deploy to Supabase (Production)
-        if: github.ref == 'refs/heads/main'
-        run: ./gradlew bootRun
-        env:
-          SPRING_PROFILES_ACTIVE: prod
-          JDBC_DATABASE_URL: ${{ secrets.JDBC_DATABASE_URL }}
-          JDBC_DATABASE_USERNAME: ${{ secrets.JDBC_DATABASE_USERNAME }}
-          JDBC_DATABASE_PASSWORD: ${{ secrets.JDBC_DATABASE_PASSWORD }}
