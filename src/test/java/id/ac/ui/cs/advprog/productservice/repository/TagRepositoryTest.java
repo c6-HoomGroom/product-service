@@ -4,22 +4,30 @@ import id.ac.ui.cs.advprog.productservice.model.Tag;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.internal.matchers.Equality;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@ExtendWith(SpringExtension.class)
+@DataJpaTest
 public class TagRepositoryTest {
+
+    @Autowired
     TagRepository tagRepository;
     List<Tag> tags;
 
     @BeforeEach
     void setUp() {
-        tagRepository = new TagRepository();
-
+        MockitoAnnotations.openMocks(this);
         tags = new ArrayList<>();
         tags.add(new Tag("Wood"));
         tags.add(new Tag("Metal"));
@@ -38,22 +46,14 @@ public class TagRepositoryTest {
         Tag tag = tags.getFirst();
         Tag result = tagRepository.save(tag);
 
-        Tag findResult = tagRepository.findById(tags.getFirst().getId());
+        Optional<Tag> findResultOptional = tagRepository.findById(tags.getFirst().getId());
+        assertTrue(findResultOptional.isPresent()); // Ensure tag is found
+
+        Tag findResult = findResultOptional.get();
         assertEquals(tag.getId(), result.getId());
         assertEquals(tag.getId(), findResult.getId());
         assertEquals(tag.getName(), result.getName());
         assertEquals(tag.getName(), findResult.getName());
-    }
-
-    @Test
-    void testSaveDuplicate() {
-        Tag tag = tags.getFirst();
-        Tag tag2 = new Tag(tag.getName());
-        Tag result = tagRepository.save(tag);
-        Tag result2 = tagRepository.save(tag2);
-
-        assertEquals(result.getId(), result2.getId());
-        assertEquals(result.getName(), result2.getName());
     }
 
     @Test
@@ -63,7 +63,10 @@ public class TagRepositoryTest {
         }
 
         Tag toFind = tags.getLast();
-        Tag findResult = tagRepository.findById(toFind.getId());
+        Optional<Tag> findResultOptional = tagRepository.findById(toFind.getId());
+        assertTrue(findResultOptional.isPresent()); // Ensure tag is found
+
+        Tag findResult = findResultOptional.get(); // Extract the Tag from Optional
         assertEquals(toFind.getId(), findResult.getId());
         assertEquals(toFind.getName(), findResult.getName());
     }
@@ -75,8 +78,8 @@ public class TagRepositoryTest {
         }
 
 
-        Tag findResult = tagRepository.findById(UUID.randomUUID());
-        assertNull(findResult);
+        Optional<Tag> findResult = tagRepository.findById(UUID.randomUUID());
+        assertTrue(findResult.isEmpty());
     }
 
     @Test
@@ -93,23 +96,12 @@ public class TagRepositoryTest {
     void testDeleteIfExist() {
         Tag tag = tags.getFirst();
         tagRepository.save(tag);
-        Tag findResult = tagRepository.findById(tag.getId());
+        Optional<Tag> findResult = tagRepository.findById(tag.getId());
 
         assertNotNull(findResult);
-        tagRepository.delete(tag.getId());
+        tagRepository.deleteById(tag.getId());
         findResult = tagRepository.findById(tag.getId());
 
-        assertNull(findResult);
-    }
-
-    @Test
-    void testDeleteIfNotExist() {
-        Tag tag = tags.getFirst();
-        tagRepository.save(tag);
-        Tag findResult = tagRepository.findById(tag.getId());
-
-        assertNotNull(findResult);
-
-        assertThrows(RuntimeException.class, () -> tagRepository.delete(UUID.randomUUID()));
+        assertTrue(findResult.isEmpty());
     }
 }

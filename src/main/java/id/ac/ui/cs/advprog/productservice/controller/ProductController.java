@@ -75,7 +75,7 @@ public class ProductController {
     }
 
     @PostMapping("/edit")
-    public String editProductPost(@ModelAttribute Product product, @RequestParam("tagNames") String tagNames) {
+    public String editProductPost(@ModelAttribute Product product, @RequestParam(value = "tagNames", required = false) String tagNames) {
         Set<Tag> selectedTags = new HashSet<>();
         String[] tags = tagNames.split(",");
         List<String> tagList = Arrays.asList(tags);

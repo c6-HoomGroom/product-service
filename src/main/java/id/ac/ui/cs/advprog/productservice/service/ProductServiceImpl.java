@@ -5,7 +5,9 @@ import id.ac.ui.cs.advprog.productservice.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -21,18 +23,30 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product update(Product product) {
-        return productRepository.update(product);
+        return productRepository.save(product);
     }
 
     @Override
     public void delete(String id) {
-        productRepository.delete(UUID.fromString(id));
+        productRepository.deleteById(UUID.fromString(id));
     }
+
+//    @Override
+//    public void delete(String id) {
+//        productRepository.deleteById(id);
+//    }
 
     @Override
     public Product findById(String id) {
-        return productRepository.findById(UUID.fromString(id));
+        Optional<Product> optionalProduct = productRepository.findById(UUID.fromString(id));
+        return optionalProduct.orElse(null);
     }
+
+//    @Override
+//    public Product findById(String id) {
+//        Optional<Product> optionalProduct = productRepository.findById(id);
+//        return optionalProduct.orElse(null);
+//    }
 
     @Override
     public List<Product> findAll() {

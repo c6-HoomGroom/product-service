@@ -3,6 +3,7 @@ package id.ac.ui.cs.advprog.productservice.service;
 import id.ac.ui.cs.advprog.productservice.model.Product;
 import id.ac.ui.cs.advprog.productservice.model.Tag;
 import id.ac.ui.cs.advprog.productservice.repository.ProductRepository;
+import id.ac.ui.cs.advprog.productservice.repository.TagRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,6 +16,7 @@ import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @ExtendWith(MockitoExtension.class)
@@ -26,16 +28,24 @@ public class ProductServiceImplTest {
     @Mock
     ProductRepository productRepository;
 
+    @Mock
+    TagRepository tagRepository;
+
     List<Product> products;
 
     @BeforeEach
     void setUp() {
         products = new ArrayList<>();
 
+        Tag wooden = tagRepository.save(new Tag("Wooden"));
+        Tag chair = tagRepository.save(new Tag("Chair"));
+        Tag metal = tagRepository.save(new Tag("Metal"));
+        Tag spoon = tagRepository.save(new Tag("Spoon"));
+
         Product product = Product.builder()
                 .name("Kursi Kayu")
-                .tag(new Tag("Wooden"))
-                .tag(new Tag("Chair"))
+                .tag(wooden)
+                .tag(chair)
                 .description("Kursi Kayu")
                 .image("https://i.ibb.co/KzQjH3p/sam-moghadam-khamseh-kvmds-Tr-GOBM-unsplash.jpg")
                 .price(300000)
@@ -44,8 +54,8 @@ public class ProductServiceImplTest {
 
         Product product2 = Product.builder()
                 .name("Kursi Metal")
-                .tag(new Tag("Metal"))
-                .tag(new Tag("Chair"))
+                .tag(metal)
+                .tag(chair)
                 .description("Kursi Metal")
                 .image("https://i.ibb.co/KzQjH3p/sam-moghadam-khamseh-kvmds-Tr-GOBM-unsplash.jpg")
                 .price(400000)
@@ -54,8 +64,8 @@ public class ProductServiceImplTest {
 
         Product product3 = Product.builder()
                 .name("Sendok Kayu")
-                .tag(new Tag("Wooden"))
-                .tag(new Tag("Spoon"))
+                .tag(wooden)
+                .tag(spoon)
                 .description("Sendok Kayu")
                 .image("https://i.ibb.co/KzQjH3p/sam-moghadam-khamseh-kvmds-Tr-GOBM-unsplash.jpg")
                 .price(40000)
@@ -112,7 +122,7 @@ public class ProductServiceImplTest {
         Product product2 = products.getLast();
         product2.setId(product1.getId());
 
-        when(productRepository.update(product2)).thenReturn(mockUpdate(product2));
+        when(productRepository.save(product2)).thenReturn(mockUpdate(product2));
         productService.update(product2);
 
         product1 = products.getFirst();
@@ -122,18 +132,18 @@ public class ProductServiceImplTest {
         assertEquals(product1.getDescription(), product2.getDescription());
         assertEquals(product1.getPrice(), product2.getPrice());
 
-        verify(productRepository, times(1)).update(product2);
+        verify(productRepository, times(1)).save(product2);
     }
     @Test
     void testUpdateIfNotFound() {
         Product product = new Product();
 
-        when(productRepository.update(product)).thenReturn(mockUpdate(product));
+        when(productRepository.save(product)).thenReturn(mockUpdate(product));
         Product updatedProduct = productService.update(product);
 
         assertNull(updatedProduct);
 
-        verify(productRepository, times(1)).update(product);
+        verify(productRepository, times(1)).save(product);
     }
     @Test
     void testDelete() {
@@ -141,7 +151,7 @@ public class ProductServiceImplTest {
         doAnswer(invocation -> {
             products.remove(product);
             return null;
-        }).when(productRepository).delete(product.getId());
+        }).when(productRepository).deleteById(product.getId());
 
         when(productRepository.findAll()).thenReturn(products);
 
@@ -153,24 +163,24 @@ public class ProductServiceImplTest {
         List<Product> afterDelete = productService.findAll();
         assertEquals(2, afterDelete.size());
 
-        verify(productRepository, times(1)).delete(product.getId());
+        verify(productRepository, times(1)).deleteById(product.getId());
     }
     @Test
     void testDeleteIfNotFound() {
         UUID productId = UUID.fromString("12345678-1234-1234-1234-123456789abc");
         doAnswer(invocation -> {
             throw new RuntimeException("Product not found for id: " + productId.toString());
-        }).when(productRepository).delete(productId);
+        }).when(productRepository).deleteById(productId);
 
         assertThrows(RuntimeException.class, () -> productService.delete(productId.toString()));
 
-        verify(productRepository, times(1)).delete(productId);
+        verify(productRepository, times(1)).deleteById(productId);
     }
     @Test
     void testFindById() {
         Product product = products.get(1);
         UUID productId = product.getId();
-        when(productRepository.findById(productId)).thenReturn(mockFindById(productId));
+        when(productRepository.findById(productId)).thenReturn(Optional.ofNullable(mockFindById(productId)));
         Product foundProduct = productService.findById(productId.toString());
 
         assertNotNull(foundProduct);
