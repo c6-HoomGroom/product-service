@@ -41,7 +41,7 @@ jobs:
         run: |
           gcloud run deploy product-service-staging \
           --region europe-west1 \
-          --image gcr.io/${{ secrets.GCP_PROJECT_ID }}/product-service:${{ github.sha }} \
+          --image gcr.io/${{ secrets.GCP_PROJECT_ID }}/product-service:latest \
           --platform managed \
           --allow-unauthenticated \
           --project ${{ secrets.GCP_PROJECT_ID }} \
