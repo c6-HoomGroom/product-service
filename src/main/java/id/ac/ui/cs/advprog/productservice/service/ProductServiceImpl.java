@@ -31,22 +31,11 @@ public class ProductServiceImpl implements ProductService {
         productRepository.deleteById(UUID.fromString(id));
     }
 
-//    @Override
-//    public void delete(String id) {
-//        productRepository.deleteById(id);
-//    }
-
     @Override
     public Product findById(String id) {
         Optional<Product> optionalProduct = productRepository.findById(UUID.fromString(id));
         return optionalProduct.orElse(null);
     }
-
-//    @Override
-//    public Product findById(String id) {
-//        Optional<Product> optionalProduct = productRepository.findById(id);
-//        return optionalProduct.orElse(null);
-//    }
 
     @Override
     public List<Product> findAll() {
