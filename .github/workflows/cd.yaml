@@ -4,9 +4,11 @@ on:
   push:
     branches:
       - main
+      - staging
   pull_request:
     branches:
       - main
+      - staging
 
 jobs:
   build:
@@ -34,7 +36,24 @@ jobs:
       - name: Push
         run: docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/product-service:latest
 
-      - name: Deploy
+      - name: Deploy to Staging
+        if: github.ref == 'refs/heads/staging'
+        run: |
+          gcloud run deploy product-service-staging \
+          --region europe-west1 \
+          --image gcr.io/${{ secrets.GCP_PROJECT_ID }}/product-service:${{ github.sha }} \
+          --platform managed \
+          --allow-unauthenticated \
+          --project ${{ secrets.GCP_PROJECT_ID }} \
+          --set-env-vars SPRING_PROFILES_ACTIVE=staging \
+          --set-env-vars JDBC_DATABASE_URL=${{ secrets.JDBC_DATABASE_URL }} \
+          --set-env-vars JDBC_DATABASE_USERNAME=${{ secrets.JDBC_DATABASE_USERNAME }} \
+          --set-env-vars JDBC_DATABASE_PASSWORD=${{ secrets.JDBC_DATABASE_PASSWORD }} \
+          --quiet \
+          --revision-suffix=$(date +%s)
+
+      - name: Deploy to Production
+        if: github.ref == 'refs/heads/main'
         run: |
           gcloud run deploy product-service \
           --region europe-west1 \
