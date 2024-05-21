@@ -3,10 +3,6 @@ package id.ac.ui.cs.advprog.productservice.model;
 import lombok.Setter;
 import lombok.Getter;
 import jakarta.persistence.*;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Type;
-import org.hibernate.annotations.UuidGenerator;
-
 import java.util.Set;
 import java.util.UUID;
 

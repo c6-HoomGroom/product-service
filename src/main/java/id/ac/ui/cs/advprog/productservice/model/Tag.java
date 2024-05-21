@@ -1,10 +1,9 @@
 package id.ac.ui.cs.advprog.productservice.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.Type;
-import org.hibernate.annotations.UuidGenerator;
 
 import java.util.Set;
 import java.util.UUID;
@@ -19,6 +18,7 @@ public class Tag {
     private String name;
 
     @ManyToMany(mappedBy = "tags")
+    @JsonIgnore
     private Set<Product> products;
 
     public Tag() {
