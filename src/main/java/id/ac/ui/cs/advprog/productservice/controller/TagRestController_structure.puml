@@ -1,0 +1,140 @@
+@startuml
+
+/' diagram meta data start
+config=StructureConfiguration;
+{
+  "projectClassification": {
+    "searchMode": "OpenProject", // OpenProject, AllProjects
+    "includedProjects": "",
+    "pathEndKeywords": "*.impl",
+    "isClientPath": "",
+    "isClientName": "",
+    "isTestPath": "",
+    "isTestName": "",
+    "isMappingPath": "",
+    "isMappingName": "",
+    "isDataAccessPath": "",
+    "isDataAccessName": "",
+    "isDataStructurePath": "",
+    "isDataStructureName": "",
+    "isInterfaceStructuresPath": "",
+    "isInterfaceStructuresName": "",
+    "isEntryPointPath": "",
+    "isEntryPointName": "",
+    "treatFinalFieldsAsMandatory": false
+  },
+  "graphRestriction": {
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "removeByInheritance": "", // inheritance/annotation based filtering is done in a second step
+    "removeByAnnotation": "",
+    "removeByClassPackage": "", // cleanup the graph after inheritance/annotation based filtering is done
+    "removeByClassName": "",
+    "cutMappings": false,
+    "cutEnum": true,
+    "cutTests": true,
+    "cutClient": true,
+    "cutDataAccess": true,
+    "cutInterfaceStructures": true,
+    "cutDataStructures": true,
+    "cutGetterAndSetter": true,
+    "cutConstructors": true
+  },
+  "graphTraversal": {
+    "forwardDepth": 3,
+    "backwardDepth": 3,
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "hideMappings": false,
+    "hideDataStructures": false,
+    "hidePrivateMethods": true,
+    "hideInterfaceCalls": true, // indirection: implementation -> interface (is hidden) -> implementation
+    "onlyShowApplicationEntryPoints": false, // root node is included
+    "useMethodCallsForStructureDiagram": "ForwardOnly" // ForwardOnly, BothDirections, No
+  },
+  "details": {
+    "aggregation": "GroupByClass", // ByClass, GroupByClass, None
+    "showClassGenericTypes": true,
+    "showMethods": true,
+    "showMethodParameterNames": true,
+    "showMethodParameterTypes": true,
+    "showMethodReturnType": true,
+    "showPackageLevels": 2,
+    "showDetailedClassStructure": true
+  },
+  "rootClass": "id.ac.ui.cs.advprog.productservice.controller.TagRestController",
+  "extensionCallbackMethod": "" // qualified.class.name#methodName - signature: public static String method(String)
+}
+diagram meta data end '/
+
+
+
+digraph g {
+    rankdir="TB"
+    splines=polyline
+    
+
+'nodes 
+subgraph cluster_3106 { 
+   	label=ac
+	labeljust=l
+	fillcolor="#ececec"
+	style=filled
+   
+   subgraph cluster_92578784 { 
+   	label=ui
+	labeljust=l
+	fillcolor="#d8d8d8"
+	style=filled
+   
+   TagRestController767523206[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)TagRestController</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >#   logger: Logger [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   tagService: TagService [1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ createTag(tag: Tag): ResponseEntity</TD></TR>
+<TR><TD ALIGN="LEFT" >+ deleteTag(tagId: String): ResponseEntity</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getTagById(id: String): ResponseEntity</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getTagByName(name: String): ResponseEntity</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+TagServiceImpl253397259[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)TagServiceImpl</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   tagRepository: TagRepository [1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ create(tag: Tag): Tag</TD></TR>
+<TR><TD ALIGN="LEFT" >+ delete(id: String)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ findAll(): List&lt;Tag&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ findById(id: String): Tag</TD></TR>
+<TR><TD ALIGN="LEFT" >+ findByName(name: String): Tag</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+} 
+} 
+
+'edges    
+TagRestController767523206 -> TagServiceImpl253397259[arrowhead=none];
+    
+}
+@enduml
