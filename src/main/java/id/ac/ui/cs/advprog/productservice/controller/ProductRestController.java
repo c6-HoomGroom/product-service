@@ -67,19 +67,19 @@ public class ProductRestController
         ResponseEntity responseEntity = null;
 
         try {
-            Set<Tag> selectedTags = new HashSet<>();
-            if (tagNames != null && !tagNames.isEmpty()) {
-                String[] tags = tagNames.split(",");
-                List<String> tagList = Arrays.asList(tags);
-
-                for (String tagName : tagList) {
-                    Tag tag = tagService.findByName(tagName);
-                    if (tag != null) {
-                        selectedTags.add(tag);
-                    }
-                }
-            }
-            product.setTags(selectedTags);
+//            Set<Tag> selectedTags = new HashSet<>();
+//            if (tagNames != null && !tagNames.isEmpty()) {
+//                String[] tags = tagNames.split(",");
+//                List<String> tagList = Arrays.asList(tags);
+//
+//                for (String tagName : tagList) {
+//                    Tag tag = tagService.findByName(tagName);
+//                    if (tag != null) {
+//                        selectedTags.add(tag);
+//                    }
+//                }
+//            }
+//            product.setTags(selectedTags);
             productService.create(product);
 
             responseEntity = ResponseEntity.ok().build();
