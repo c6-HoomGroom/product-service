@@ -1,6 +1,7 @@
 package id.ac.ui.cs.advprog.productservice.controller;
 
 import id.ac.ui.cs.advprog.productservice.model.Product;
+import id.ac.ui.cs.advprog.productservice.model.ProductWithTagsRequest;
 import id.ac.ui.cs.advprog.productservice.model.Tag;
 import id.ac.ui.cs.advprog.productservice.service.ProductService;
 import id.ac.ui.cs.advprog.productservice.service.TagService;
@@ -61,11 +62,46 @@ public class ProductRestController
         return responseEntity;
     }
 
-    @PostMapping("/api")
-    public ResponseEntity createProduct(@RequestBody Product product, @RequestParam(value = "tagNames", required = false) String tagNames) {
-        ResponseEntity responseEntity = null;
+//    @PostMapping("/api")
+//    public ResponseEntity createProduct(@RequestBody Product product, @RequestParam(value = "tagNames", required = false) String tagNames) {
+//        ResponseEntity responseEntity = null;
+//
+//        try {
+//            Set<Tag> selectedTags = new HashSet<>();
+//            if (tagNames != null && !tagNames.isEmpty()) {
+//                String[] tags = tagNames.split(",");
+//                List<String> tagList = Arrays.asList(tags);
+//
+//                for (String tagName : tagList) {
+//                    Tag tag = tagService.findByName(tagName);
+//                    if (tag != null) {
+//                        selectedTags.add(tag);
+//                    }
+//                }
+//            }
+//            product.setTags(selectedTags);
+//            productService.create(product);
+//
+//            responseEntity = ResponseEntity.ok().build();
+//
+//        } catch (Exception e) {
+//            String errMessage = "Failed to create product.";
+//            logger.info(errMessage);
+//            responseEntity = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+//                    .body(errMessage);
+//        }
+//
+//        return responseEntity;
+//    }
 
+    @PostMapping("/api")
+    public ResponseEntity createProduct(@RequestBody ProductWithTagsRequest productRequest) {
         try {
+            // Extract product and tagNames from the request
+            Product product = productRequest.getProduct();
+            String tagNames = productRequest.getTagNames();
+
+            // Process tags
             Set<Tag> selectedTags = new HashSet<>();
             if (tagNames != null && !tagNames.isEmpty()) {
                 String[] tags = tagNames.split(",");
@@ -78,19 +114,16 @@ public class ProductRestController
                     }
                 }
             }
+
+            // Set tags and create product
             product.setTags(selectedTags);
             productService.create(product);
-
-            responseEntity = ResponseEntity.ok().build();
-
+            return ResponseEntity.ok().build();
         } catch (Exception e) {
             String errMessage = "Failed to create product.";
             logger.info(errMessage);
-            responseEntity = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(errMessage);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errMessage);
         }
-
-        return responseEntity;
     }
 
     @RequestMapping(value = "/api/delete/{productId}", method = RequestMethod.DELETE)
