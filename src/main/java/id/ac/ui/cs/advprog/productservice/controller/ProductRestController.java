@@ -1,7 +1,6 @@
 package id.ac.ui.cs.advprog.productservice.controller;
 
 import id.ac.ui.cs.advprog.productservice.model.Product;
-import id.ac.ui.cs.advprog.productservice.model.ProductWithTagsRequest;
 import id.ac.ui.cs.advprog.productservice.model.Tag;
 import id.ac.ui.cs.advprog.productservice.service.ProductService;
 import id.ac.ui.cs.advprog.productservice.service.TagService;
@@ -16,6 +15,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/products")
 public class ProductRestController
